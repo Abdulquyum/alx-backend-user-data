@@ -3,20 +3,42 @@
 application
 """
 from flask import request
+from typing import List, TypeVar
 
 
 class Auth():
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ Required Authentication """
+        """Check if a path requires authentication.
+
+        Args:
+            path (str): The path to check.
+            excluded_paths (List[str]): List of paths that do not require authentication.
+
+        Returns:
+            bool: True if the path requires authentication, False otherwise.
+        """
         returns False
 
 
     def authorization_header(self, request=None) -> str:
-        """ Authorization header - request is the
-        flask request object """
+        """Retrieve the Authorization header from the request.
+
+        Args:
+            request: The flask request object.
+
+        Returns:
+            str: The Authorization header if it exists, None otherwise.
+        """
         return None
 
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ Current User Authorization """
+        """Retrieve the current user (to be implemented).
+
+        Args:
+            request: The flask request object.
+
+        Returns:
+            User: The currently authenticated user.
+        """ 
         return None
