@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-""" handle all authentications in this
+"""
+handle all authentications in this
 application
 """
 from flask import request
 from typing import List, TypeVar
 
 
-class Auth:
+class Auth():
     """ CLASS AUTH """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Check if a path requires authentication.
@@ -18,7 +19,7 @@ class Auth:
         Returns:
             bool: True if the path requires authentication, False otherwise.
         """
-        returns False
+        return False
 
 
     def authorization_header(self, request=None) -> str:
