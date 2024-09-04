@@ -4,7 +4,6 @@ handle all authentications in this
 application
 """
 from flask import request
-from typing import List, TypeVar
 
 
 class Auth():
