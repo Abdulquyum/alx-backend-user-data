@@ -6,7 +6,8 @@ from flask import request
 from typing import List, TypeVar
 
 
-class Auth():
+class Auth:
+    """ CLASS AUTH """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Check if a path requires authentication.
 
