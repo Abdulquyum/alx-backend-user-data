@@ -36,7 +36,7 @@ class DB():
 
         return new_user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs: dict) -> int:
         """ Find USer by """
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
@@ -47,4 +47,20 @@ class DB():
         except NoResultFound as e:
             raise e
         except InvalidRequestError as err:
+            raise err
+
+    def update_user(self, user_id: int, **kwargs: dict) -> None:
+        """ Update user info """
+        try:
+            user = self.find_user_by(id=user_id)
+            
+            for key, value in kwargs.items():
+                if hasattr(user, key):
+                    setattr(user, key, value)
+                else:
+                    raise ValueError
+
+            self._session.commit()
+
+        except ValueError as err:
             raise err
