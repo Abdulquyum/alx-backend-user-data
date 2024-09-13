@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
+from sqlalchemy.exc import NoResultFound, InvalidRequestError
 
 
 class DB():
@@ -33,3 +34,16 @@ class DB():
         self._session.commit()
 
         return new_user
+
+    def find_user_by(self, **kwargs):
+        """ Find USer by """
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if user:
+                return user
+            else:
+                raise NoResultFound
+        except NoResultFound as e:
+            raise e
+        except InvalidRequestError as err:
+            raise err
