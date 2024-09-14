@@ -36,7 +36,7 @@ class DB():
 
         return new_user
 
-    def find_user_by(self, **kwargs: dict) -> int:
+    def find_user_by(self, **kwargs) -> int:
         """ Find USer by """
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
@@ -49,7 +49,7 @@ class DB():
         except InvalidRequestError as err:
             raise err
 
-    def update_user(self, user_id: int, **kwargs: dict) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """ Update user info """
         try:
             user = self.find_user_by(id=user_id)
