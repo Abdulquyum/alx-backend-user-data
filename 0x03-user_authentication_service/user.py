@@ -13,7 +13,7 @@ class User(Base):
     first_name = Column(String(250), nullable=False)
     last_name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
-    phone_number = Column(Integer(250), nullable=False)
+    phone_number = Column(Integer, nullable=False)
     address = Column(String(250), nullable=False)
     hashed_password = Column(String(250), nullable=False)
     session_id = Column(String(250), nullable=True)
