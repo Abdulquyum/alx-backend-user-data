@@ -4,14 +4,70 @@
 import requests
 
 
-register_user(email: str, password: str) -> None
-log_in_wrong_password(email: str, password: str) -> None
-log_in(email: str, password: str) -> str
-profile_unlogged() -> None
-profile_logged(session_id: str) -> None
-log_out(session_id: str) -> None
-reset_password_token(email: str) -> str
-update_password(email: str, reset_token: str, new_password: str) -> None
+def register_user(email: str, password: str) -> None:
+    """Register a new user"""
+    response = requests.post('http://localhost:5000/users',
+                           data={'email': email, 'password': password})
+    assert response.status_code == 200
+    assert response.json() == {"email": email, "message": "user created"}
+
+
+def log_in_wrong_password(email: str, password: str) -> None:
+    """Attempt to log in with wrong password"""
+    response = requests.post('http://localhost:5000/sessions',
+                           data={'email': email, 'password': password})
+    assert response.status_code == 401
+
+
+def log_in(email: str, password: str) -> str:
+    """Log in with correct credentials"""
+    response = requests.post('http://localhost:5000/sessions',
+                           data={'email': email, 'password': password})
+    assert response.status_code == 200
+    assert response.json() == {"email": email, "message": "logged in"}
+    return response.cookies.get('session_id')
+
+
+def profile_unlogged() -> None:
+    """Attempt to access profile without being logged in"""
+    response = requests.get('http://localhost:5000/profile')
+    assert response.status_code == 403
+
+
+def profile_logged(session_id: str) -> None:
+    """Access profile while logged in"""
+    cookies = {'session_id': session_id}
+    response = requests.get('http://localhost:5000/profile', cookies=cookies)
+    assert response.status_code == 200
+    assert "email" in response.json()
+
+
+def log_out(session_id: str) -> None:
+    """Log out the user"""
+    cookies = {'session_id': session_id}
+    response = requests.delete('http://localhost:5000/sessions', cookies=cookies)
+    assert response.status_code == 200
+    assert response.json() == {"message": "Bienvenue"}
+
+
+def reset_password_token(email: str) -> str:
+    """Get reset password token"""
+    response = requests.post('http://localhost:5000/reset_password',
+                           data={'email': email})
+    assert response.status_code == 200
+    assert "email" in response.json()
+    assert "reset_token" in response.json()
+    return response.json().get('reset_token')
+
+
+def update_password(email: str, reset_token: str, new_password: str) -> None:
+    """Update password using reset token"""
+    response = requests.put('http://localhost:5000/reset_password',
+                          data={'email': email,
+                                'reset_token': reset_token,
+                                'new_password': new_password})
+    assert response.status_code == 200
+    assert response.json() == {"email": email, "message": "Password updated"}
 
 
 EMAIL = "guillaume@holberton.io"
